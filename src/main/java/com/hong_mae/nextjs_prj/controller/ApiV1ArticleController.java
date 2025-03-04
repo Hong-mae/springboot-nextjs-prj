@@ -32,7 +32,7 @@ public class ApiV1ArticleController {
     @GetMapping("/{id}")
     public Article getArticle(@PathVariable("id") Long id) {
         Article article = this.articleService.getArticle(id);
-        return article;
+        return new Article();
     }
 
 }
