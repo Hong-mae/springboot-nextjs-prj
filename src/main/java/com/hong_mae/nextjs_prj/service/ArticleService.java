@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.hong_mae.nextjs_prj.domain.Article;
+import com.hong_mae.nextjs_prj.global.ReturnData.ReturnData;
 import com.hong_mae.nextjs_prj.repository.ArticleRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,12 +25,15 @@ public class ArticleService {
         return this.articleRepository.findById(id);
     }
 
-    public void create(String sub, String con) {
+    @Transactional
+    public ReturnData<Article> create(String sub, String con) {
         Article article = Article.builder()
                 .subject(sub)
                 .content(con)
                 .build();
 
         this.articleRepository.save(article);
+
+        return ReturnData.of("S-2", "게시물이 등록 되었습니다.", article);
     }
 }

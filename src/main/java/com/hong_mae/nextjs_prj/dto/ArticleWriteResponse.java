@@ -7,6 +7,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ArticleResponse {
+public class ArticleWriteResponse {
     private final Article article;
 }
