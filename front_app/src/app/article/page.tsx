@@ -19,8 +19,6 @@ const getArticles = async (): Promise<ArticlesType> => {
     (data) => data.json()
   );
 
-  console.log(list);
-
   return list;
 };
 
@@ -39,7 +37,8 @@ export default async function Article() {
       <ul>
         {articles.map((e) => (
           <li key={e.subject}>
-            <Link href={`/article/${e.id}`}>{e.subject}</Link>
+            {e.id} / <Link href={`/article/${e.id}`}>{e.subject}</Link>/
+            {e.createdAt}
           </li>
         ))}
       </ul>

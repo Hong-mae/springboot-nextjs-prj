@@ -20,4 +20,9 @@ import lombok.experimental.SuperBuilder;
 public class Article extends BaseEntity {
     private String subject;
     private String content;
+
+    public void update(String subject, String content) {
+        this.subject = subject;
+        this.content = content;
+    }
 }

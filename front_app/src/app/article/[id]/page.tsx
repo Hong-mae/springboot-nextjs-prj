@@ -1,31 +1,45 @@
-"use client";
-
-import { ParamValue } from "next/dist/server/request/params";
-import { useParams } from "next/navigation";
-
 interface Props {
-  id: ParamValue;
+  params: Promise<{ id: number }>;
 }
 
 type ArticleType = {
-  id: string;
-  subject: string;
-  content: string;
-  createdAt: string;
-  modifiedAt: string;
+  resultCode: string;
+  msg: string;
+  data: {
+    article: {
+      id: string;
+      subject: string;
+      content: string;
+      createdAt: string;
+      modifiedAt: string;
+    };
+  };
 };
 
-const getArticle = async ({ id }: Props): Promise<ArticleType> => {
-  const info = await fetch(`http://localhost:8090/api/v1/articles/${id}`).then(
-    (data) => data.json()
+const getArticle = async (id: number): Promise<ArticleType> => {
+  const article = await fetch(
+    `http://localhost:8090/api/v1/articles/${id}`
+  ).then((data) => data.json());
+
+  console.log(article);
+
+  return article;
+};
+
+export default async function ArticleDetail({ params }: Props) {
+  const { id } = await params;
+  const {
+    data: {
+      article: { subject, content, createdAt, modifiedAt },
+    },
+  } = await getArticle(id);
+  return (
+    <>
+      <h1>게시판 상세 {id}번</h1>
+      <div>{subject}</div>
+      <div>{content}</div>
+      <div>{createdAt}</div>
+      <div>{modifiedAt}</div>
+    </>
   );
-
-  return info;
-};
-
-export default async function ArticleDetail() {
-  const params = useParams();
-  const article = await getArticle(params.id);
-
-  return <>게시판 상세 {params.id}번</>;
 }
