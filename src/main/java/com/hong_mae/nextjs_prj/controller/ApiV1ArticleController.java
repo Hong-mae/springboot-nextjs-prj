@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hong_mae.nextjs_prj.domain.Article;
+import com.hong_mae.nextjs_prj.global.ReturnData.ReturnData;
 import com.hong_mae.nextjs_prj.service.ArticleService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,20 +20,21 @@ public class ApiV1ArticleController {
     private final ArticleService articleService;
 
     @GetMapping()
-    public List<Article> getArticles() {
+    public ReturnData<List<Article>> getArticles() {
         List<Article> articles = this.articleService.getList();
 
-        // articles.add(new Article((1L)));
-        // articles.add(new Article(2L));
-        // articles.add(new Article(3L));
-
-        return articles;
+        return ReturnData.of("S-1", "조회 성공", articles);
     }
 
     @GetMapping("/{id}")
-    public Article getArticle(@PathVariable("id") Long id) {
-        Article article = this.articleService.getArticle(id);
-        return new Article();
+    public ReturnData<Article> getArticle(@PathVariable("id") Long id) {
+        return this.articleService.getArticle(id).map((article) -> ReturnData.of(
+                "S-1",
+                "조회 성공",
+                article)).orElseGet(() -> ReturnData.of(
+                        "F-1",
+                        "%d 번 게시물은 존재하지 않습니다.".formatted(id),
+                        null));
     }
 
 }

@@ -19,13 +19,8 @@ public class ArticleService {
         return this.articleRepository.findAll();
     }
 
-    public Article getArticle(Long id) {
-        Optional<Article> article = this.articleRepository.findById(id);
-
-        if (article.isEmpty())
-            return null;
-
-        return article.get();
+    public Optional<Article> getArticle(Long id) {
+        return this.articleRepository.findById(id);
     }
 
     public void create(String sub, String con) {
