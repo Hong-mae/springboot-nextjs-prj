@@ -21,8 +21,6 @@ const getArticle = async (id: number): Promise<ArticleType> => {
     `http://localhost:8090/api/v1/articles/${id}`
   ).then((data) => data.json());
 
-  console.log(article);
-
   return article;
 };
 
