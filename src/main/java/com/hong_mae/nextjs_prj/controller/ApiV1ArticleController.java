@@ -1,9 +1,7 @@
 package com.hong_mae.nextjs_prj.controller;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,7 +60,7 @@ public class ApiV1ArticleController {
         ReturnData<Article> writeRD = this.articleService.create(awr.getSubject(), awr.getContent());
 
         if (writeRD.isFailer())
-            return (ReturnData) writeRD;
+            return ReturnData.of(writeRD.getResultCode(), writeRD.getMsg());
 
         return ReturnData.of(
                 writeRD.getResultCode(),
