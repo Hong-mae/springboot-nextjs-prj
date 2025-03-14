@@ -10,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/member")
+@RequestMapping("/api/v1/members")
 public class ApiV1MemberController {
     private final MemberService memberService;
 
-    @GetMapping("")
+    @GetMapping("/test")
     public String memberTest() {
         return "member test";
     }

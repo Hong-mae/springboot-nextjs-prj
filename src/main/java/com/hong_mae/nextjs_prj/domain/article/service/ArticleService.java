@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.hong_mae.nextjs_prj.domain.article.entity.Article;
 import com.hong_mae.nextjs_prj.domain.article.repository.ArticleRepository;
+import com.hong_mae.nextjs_prj.domain.member.entity.Member;
 import com.hong_mae.nextjs_prj.global.ReturnData.ReturnData;
 
 import jakarta.transaction.Transactional;
@@ -26,8 +27,9 @@ public class ArticleService {
     }
 
     @Transactional
-    public ReturnData<Article> create(String sub, String con) {
+    public ReturnData<Article> create(Member member, String sub, String con) {
         Article article = Article.builder()
+                .author(member)
                 .subject(sub)
                 .content(con)
                 .build();

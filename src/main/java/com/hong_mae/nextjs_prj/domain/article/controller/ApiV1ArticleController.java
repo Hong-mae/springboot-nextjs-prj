@@ -57,7 +57,7 @@ public class ApiV1ArticleController {
 
     @PostMapping()
     public ReturnData<ArticleWriteResponse> write(@Valid @RequestBody ArticleWriteRequest awr) {
-        ReturnData<Article> writeRD = this.articleService.create(awr.getSubject(), awr.getContent());
+        ReturnData<Article> writeRD = this.articleService.create(null, awr.getSubject(), awr.getContent());
 
         if (writeRD.isFailer())
             return ReturnData.of(writeRD.getResultCode(), writeRD.getMsg());
