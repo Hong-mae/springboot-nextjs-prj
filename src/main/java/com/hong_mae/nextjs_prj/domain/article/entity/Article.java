@@ -1,7 +1,7 @@
 package com.hong_mae.nextjs_prj.domain.article.entity;
 
 import com.hong_mae.nextjs_prj.domain.member.entity.Member;
-import com.hong_mae.nextjs_prj.global.BaseEntity.BaseEntity;
+import com.hong_mae.nextjs_prj.global.util.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;

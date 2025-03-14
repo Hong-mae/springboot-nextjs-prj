@@ -22,7 +22,7 @@ import com.hong_mae.nextjs_prj.domain.article.dto.ArticleWriteRequest;
 import com.hong_mae.nextjs_prj.domain.article.dto.ArticleWriteResponse;
 import com.hong_mae.nextjs_prj.domain.article.entity.Article;
 import com.hong_mae.nextjs_prj.domain.article.service.ArticleService;
-import com.hong_mae.nextjs_prj.global.ReturnData.ReturnData;
+import com.hong_mae.nextjs_prj.global.util.ReturnData;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

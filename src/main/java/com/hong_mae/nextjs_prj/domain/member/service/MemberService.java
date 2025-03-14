@@ -1,14 +1,18 @@
 package com.hong_mae.nextjs_prj.domain.member.service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.hong_mae.nextjs_prj.domain.member.dto.AuthAndMakeTokensResponse;
 import com.hong_mae.nextjs_prj.domain.member.entity.Member;
 import com.hong_mae.nextjs_prj.domain.member.repository.MemberRepository;
-import com.hong_mae.nextjs_prj.global.ReturnData.ReturnData;
-import com.hong_mae.nextjs_prj.global.jwt.JwtProvider;
+import com.hong_mae.nextjs_prj.global.util.ReturnData;
+import com.hong_mae.nextjs_prj.global.util.SecurityUser;
+import com.hong_mae.nextjs_prj.global.util.jwt.JwtProvider;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +44,16 @@ public class MemberService {
         String accessToken = jwtProvider.genToken(member, 60 * 60 * 5);
 
         return ReturnData.of("S-6", "로그인 성공", new AuthAndMakeTokensResponse(member, accessToken));
+    }
+
+    public SecurityUser getUserFromAccessToken(String accessToken) {
+        System.out.println(accessToken);
+        Map<String, Object> payload = jwtProvider.getClaims(accessToken);
+
+        long id = (int) payload.get("id");
+        String username = (String) payload.get("username");
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        return new SecurityUser(id, username, "", authorities);
     }
 }

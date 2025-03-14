@@ -17,22 +17,22 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http
-                                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                                                .requestMatchers("/**").permitAll())
-                                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()))
-                                .headers(headers -> headers
-                                                .addHeaderWriter(
-                                                                new XFrameOptionsHeaderWriter(
-                                                                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)));
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers("/**").permitAll())
+                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()))
+                .headers(headers -> headers
+                        .addHeaderWriter(
+                                new XFrameOptionsHeaderWriter(
+                                        XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)));
 
-                return http.build();
-        }
+        return http.build();
+    }
 
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-                return new BCryptPasswordEncoder();
-        }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

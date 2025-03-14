@@ -1,4 +1,4 @@
-package com.hong_mae.nextjs_prj.global.BaseEntity;
+package com.hong_mae.nextjs_prj.global.util;
 
 import java.time.LocalDateTime;
 

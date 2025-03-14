@@ -12,7 +12,7 @@ import com.hong_mae.nextjs_prj.domain.member.dto.LoginRequest;
 import com.hong_mae.nextjs_prj.domain.member.dto.LoginResponse;
 import com.hong_mae.nextjs_prj.domain.member.dto.MemberDto;
 import com.hong_mae.nextjs_prj.domain.member.service.MemberService;
-import com.hong_mae.nextjs_prj.global.ReturnData.ReturnData;
+import com.hong_mae.nextjs_prj.global.util.ReturnData;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -25,25 +25,28 @@ public class ApiV1MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse resp) {
-        System.out.println("TESTESTESTESTEST");
-
-        return "test";
+    public ReturnData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest,
+            HttpServletResponse resp) {
         // username, password => accessToken 발급
-        // ReturnData<AuthAndMakeTokensResponse> authData = this.memberService
-        // .authAndMakeTokens(loginRequest.getUsername(), loginRequest.getPassword());
+        ReturnData<AuthAndMakeTokensResponse> authData = this.memberService
+                .authAndMakeTokens(loginRequest.getUsername(), loginRequest.getPassword());
 
-        // ResponseCookie cookie = ResponseCookie.from("accessToken",
-        // authData.getData().getAccessToken())
-        // .path("/")
-        // .sameSite("None")
-        // .secure(true)
-        // .httpOnly(true)
-        // .build();
+        ResponseCookie cookie = ResponseCookie.from("accessToken",
+                authData.getData().getAccessToken())
+                .path("/")
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .build();
 
-        // resp.addHeader("Set-Cookie", cookie.toString());
+        resp.addHeader("Set-Cookie", cookie.toString());
 
-        // return ReturnData.of(authData.getResultCode(), authData.getMsg(),
-        // new LoginResponse(new MemberDto(authData.getData().getMember())));
+        return ReturnData.of(authData.getResultCode(), authData.getMsg(),
+                new LoginResponse(new MemberDto(authData.getData().getMember())));
+    }
+
+    @GetMapping("/me")
+    public String me() {
+        return "내 정보";
     }
 }

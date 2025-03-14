@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.hong_mae.nextjs_prj.domain.article.entity.Article;
 import com.hong_mae.nextjs_prj.domain.article.repository.ArticleRepository;
 import com.hong_mae.nextjs_prj.domain.member.entity.Member;
-import com.hong_mae.nextjs_prj.global.ReturnData.ReturnData;
+import com.hong_mae.nextjs_prj.global.util.ReturnData;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

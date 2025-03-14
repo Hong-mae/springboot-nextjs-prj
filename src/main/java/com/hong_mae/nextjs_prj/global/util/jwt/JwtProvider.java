@@ -1,4 +1,4 @@
-package com.hong_mae.nextjs_prj.global.jwt;
+package com.hong_mae.nextjs_prj.global.util.jwt;
 
 import java.util.Base64;
 import java.util.Date;
@@ -72,7 +72,7 @@ public class JwtProvider {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .get("body", String.class);
+                .get("payload", String.class);
 
         return Util.toMap(payload);
     }

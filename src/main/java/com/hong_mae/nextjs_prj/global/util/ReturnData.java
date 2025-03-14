@@ -1,4 +1,4 @@
-package com.hong_mae.nextjs_prj.global.ReturnData;
+package com.hong_mae.nextjs_prj.global.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

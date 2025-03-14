@@ -1,4 +1,4 @@
-package com.hong_mae.nextjs_prj.global.InitData;
+package com.hong_mae.nextjs_prj.global.util;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
