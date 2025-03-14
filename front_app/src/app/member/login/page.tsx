@@ -8,7 +8,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const resp = await fetch("http://localhost:8090/api/v1/members/login", {
+    console.log("http://localhost:8090/api/v1/members/login");
+    const url = "http://localhost:8090/api/v1/members/login";
+
+    const resp = await fetch(url, {
       method: "POST",
       credentials: "include", // 핵심 변경점
       headers: {
@@ -30,6 +33,16 @@ const Login = () => {
 
     console.log({ ...user, [name]: value });
   };
+
+  const handleLogout = async () => {
+    const resp = await fetch("http://localhost:8090/api/v1/members/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (resp.ok) alert("ok");
+    else alert("fail");
+  };
   return (
     <>
       <h1>로그인</h1>
@@ -38,6 +51,7 @@ const Login = () => {
         <input type="password" name="password" onChange={handleChange} />
         <button type="submit">로그인</button>
       </form>
+      <button onClick={handleLogout}>로그아웃</button>
     </>
   );
 };

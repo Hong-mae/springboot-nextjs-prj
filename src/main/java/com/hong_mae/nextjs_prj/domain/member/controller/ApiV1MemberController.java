@@ -1,6 +1,5 @@
 package com.hong_mae.nextjs_prj.domain.member.controller;
 
-import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +11,7 @@ import com.hong_mae.nextjs_prj.domain.member.dto.LoginRequest;
 import com.hong_mae.nextjs_prj.domain.member.dto.LoginResponse;
 import com.hong_mae.nextjs_prj.domain.member.dto.MemberDto;
 import com.hong_mae.nextjs_prj.domain.member.service.MemberService;
+import com.hong_mae.nextjs_prj.global.util.Request;
 import com.hong_mae.nextjs_prj.global.util.ReturnData;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/members")
 public class ApiV1MemberController {
     private final MemberService memberService;
-    private final HttpServletResponse resp;
+    private final Request rq;
 
     @PostMapping("/login")
     public ReturnData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
@@ -32,8 +32,8 @@ public class ApiV1MemberController {
                 .authAndMakeTokens(loginRequest.getUsername(), loginRequest.getPassword());
 
         // 쿠카에 access, refresh token 넣기
-        _addHeader("accessToken", authData.getData().getAccessToken());
-        _addHeader("refreshToken", authData.getData().getRefreshToken());
+        rq.setCookie("accessToken", authData.getData().getAccessToken());
+        rq.setCookie("refreshToken", authData.getData().getRefreshToken());
 
         return ReturnData.of(authData.getResultCode(), authData.getMsg(),
                 new LoginResponse(new MemberDto(authData.getData().getMember())));
@@ -44,15 +44,11 @@ public class ApiV1MemberController {
         return "내 정보";
     }
 
-    private void _addHeader(String name, String token) {
-        ResponseCookie cookie = ResponseCookie.from(name,
-                token)
-                .path("/")
-                .sameSite("None")
-                .secure(true)
-                .httpOnly(true)
-                .build();
+    @PostMapping("/logout")
+    public ReturnData<Void> logout() {
+        rq.removeCookie("accessToken");
+        rq.removeCookie("refreshToken");
 
-        resp.addHeader("Set-Cookie", cookie.toString());
+        return ReturnData.of("S-8", "로그아웃 완료");
     }
 }

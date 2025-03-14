@@ -17,28 +17,30 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class ApiSecurityConfig {
-    private final JwtAuthorizationFilter jwtAuthorizationFilter;
+        private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
-    @Bean
-    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-        http
-                .securityMatcher("/api/**")
-                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.POST, "/api/v1/members/login").permitAll()
-                        .requestMatchers("/api/*/articles").permitAll() // 전체 글, 모든 유저 접근
-                        .requestMatchers("/api/*/articles/*").permitAll() // 상세 글, 모든 유저 접근
-                        .anyRequest().authenticated()) // 나머지는 인증/인가 처리된 사용자만 가능
-                .cors(cors -> cors.disable()) // cors 설정, 타 도메인에서 api 호출 가능
-                .csrf(csrf -> csrf.disable()) // csrf 끄기
-                .httpBasic(httpBasic -> httpBasic.disable()) // httpBasic 로그인 끄기
-                .formLogin(formLogin -> formLogin.disable()) // form 로그인 끄기
-                .sessionManagement(
-                        sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션
-                                                                                                                       // 끄기
-                .addFilterBefore(
-                        jwtAuthorizationFilter, // access token 을 통한 로그인 처리
-                        UsernamePasswordAuthenticationFilter.class);
+        @Bean
+        public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .securityMatcher("/api/**")
+                                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                                                .requestMatchers(HttpMethod.POST, "/api/v1/members/login").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/api/v1/members/logout").permitAll()
+                                                .requestMatchers("/api/*/articles").permitAll() // 전체 글, 모든 유저 접근
+                                                .requestMatchers("/api/*/articles/*").permitAll() // 상세 글, 모든 유저 접근
+                                                .anyRequest().authenticated()) // 나머지는 인증/인가 처리된 사용자만 가능
+                                .cors(cors -> cors.disable()) // cors 설정, 타 도메인에서 api 호출 가능
+                                .csrf(csrf -> csrf.disable()) // csrf 끄기
+                                .httpBasic(httpBasic -> httpBasic.disable()) // httpBasic 로그인 끄기
+                                .formLogin(formLogin -> formLogin.disable()) // form 로그인 끄기
+                                .sessionManagement(
+                                                sessionManagement -> sessionManagement
+                                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션
+                                                                                                                         // 끄기
+                                .addFilterBefore(
+                                                jwtAuthorizationFilter, // access token 을 통한 로그인 처리
+                                                UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+                return http.build();
+        }
 }
