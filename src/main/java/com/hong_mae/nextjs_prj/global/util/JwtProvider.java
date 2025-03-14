@@ -1,4 +1,4 @@
-package com.hong_mae.nextjs_prj.global.util.jwt;
+package com.hong_mae.nextjs_prj.global.util;
 
 import java.util.Base64;
 import java.util.Date;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.hong_mae.nextjs_prj.domain.member.entity.Member;
-import com.hong_mae.nextjs_prj.global.util.Util;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Jwts.SIG;
@@ -35,6 +34,14 @@ public class JwtProvider {
         String keyBase64Encoded = Base64.getEncoder().encodeToString(secretKeyOrigin.getBytes());
 
         return Keys.hmacShaKeyFor(keyBase64Encoded.getBytes());
+    }
+
+    public String genRefeshToken(Member member) {
+        return genToken(member, 60 * 60 * 24 * 365 * 1);
+    }
+
+    public String genAccessToken(Member member) {
+        return genToken(member, 60 * 10);
     }
 
     public String genToken(Member member, int seconds) {

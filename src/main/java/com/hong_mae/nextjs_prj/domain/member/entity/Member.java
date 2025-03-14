@@ -1,5 +1,6 @@
 package com.hong_mae.nextjs_prj.domain.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hong_mae.nextjs_prj.global.util.BaseEntity;
 
 import jakarta.persistence.Entity;
@@ -19,7 +20,8 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class Member extends BaseEntity {
     private String username;
+    @JsonIgnore
     private String password;
     private String email;
-
+    private String refreshToken;
 }

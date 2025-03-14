@@ -23,23 +23,17 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/members")
 public class ApiV1MemberController {
     private final MemberService memberService;
+    private final HttpServletResponse resp;
 
     @PostMapping("/login")
-    public ReturnData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest,
-            HttpServletResponse resp) {
+    public ReturnData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         // username, password => accessToken 발급
         ReturnData<AuthAndMakeTokensResponse> authData = this.memberService
                 .authAndMakeTokens(loginRequest.getUsername(), loginRequest.getPassword());
 
-        ResponseCookie cookie = ResponseCookie.from("accessToken",
-                authData.getData().getAccessToken())
-                .path("/")
-                .sameSite("None")
-                .secure(true)
-                .httpOnly(true)
-                .build();
-
-        resp.addHeader("Set-Cookie", cookie.toString());
+        // 쿠카에 access, refresh token 넣기
+        _addHeader("accessToken", authData.getData().getAccessToken());
+        _addHeader("refreshToken", authData.getData().getRefreshToken());
 
         return ReturnData.of(authData.getResultCode(), authData.getMsg(),
                 new LoginResponse(new MemberDto(authData.getData().getMember())));
@@ -48,5 +42,17 @@ public class ApiV1MemberController {
     @GetMapping("/me")
     public String me() {
         return "내 정보";
+    }
+
+    private void _addHeader(String name, String token) {
+        ResponseCookie cookie = ResponseCookie.from(name,
+                token)
+                .path("/")
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .build();
+
+        resp.addHeader("Set-Cookie", cookie.toString());
     }
 }

@@ -10,4 +10,5 @@ import lombok.Getter;
 public class AuthAndMakeTokensResponse {
     private Member member;
     private String accessToken;
+    private String refreshToken;
 }
