@@ -24,11 +24,9 @@ public class ApiSecurityConfig {
         http
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers(HttpMethod.POST, "/api/v1/members/login").permitAll()
                         .requestMatchers("/api/*/articles").permitAll() // 전체 글, 모든 유저 접근
                         .requestMatchers("/api/*/articles/*").permitAll() // 상세 글, 모든 유저 접근
-                        .requestMatchers(HttpMethod.POST, "/api/*/members/login").permitAll()
-                        // 특정 메소드만 설정하는 법
-                        // .requestMatchers(HttpMethod.POST, "/api/*/members/login").permitAll() //
                         .anyRequest().authenticated()) // 나머지는 인증/인가 처리된 사용자만 가능
                 .cors(cors -> cors.disable()) // cors 설정, 타 도메인에서 api 호출 가능
                 .csrf(csrf -> csrf.disable()) // csrf 끄기
