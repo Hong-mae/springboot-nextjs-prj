@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hong_mae.nextjs_prj.domain.article.Article;
 import com.hong_mae.nextjs_prj.domain.article.dto.ArticleListResponse;
 import com.hong_mae.nextjs_prj.domain.article.dto.ArticleModifyRequest;
 import com.hong_mae.nextjs_prj.domain.article.dto.ArticleModifyResponse;
@@ -21,6 +20,7 @@ import com.hong_mae.nextjs_prj.domain.article.dto.ArticleRemoveResponse;
 import com.hong_mae.nextjs_prj.domain.article.dto.ArticleResponse;
 import com.hong_mae.nextjs_prj.domain.article.dto.ArticleWriteRequest;
 import com.hong_mae.nextjs_prj.domain.article.dto.ArticleWriteResponse;
+import com.hong_mae.nextjs_prj.domain.article.entity.Article;
 import com.hong_mae.nextjs_prj.domain.article.service.ArticleService;
 import com.hong_mae.nextjs_prj.global.ReturnData.ReturnData;
 

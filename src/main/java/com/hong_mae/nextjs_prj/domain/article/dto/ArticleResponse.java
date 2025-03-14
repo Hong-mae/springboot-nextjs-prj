@@ -1,6 +1,6 @@
 package com.hong_mae.nextjs_prj.domain.article.dto;
 
-import com.hong_mae.nextjs_prj.domain.article.Article;
+import com.hong_mae.nextjs_prj.domain.article.entity.Article;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
