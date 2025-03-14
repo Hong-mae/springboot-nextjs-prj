@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.hong_mae.nextjs_prj.service.ArticleService;
+import com.hong_mae.nextjs_prj.domain.article.service.ArticleService;
 
 @Configuration
 @Profile({ "dev", "test" })

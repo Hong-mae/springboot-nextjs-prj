@@ -1,8 +1,8 @@
-package com.hong_mae.nextjs_prj.dto;
+package com.hong_mae.nextjs_prj.domain.article.dto;
 
 import java.util.List;
 
-import com.hong_mae.nextjs_prj.domain.Article;
+import com.hong_mae.nextjs_prj.domain.article.Article;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

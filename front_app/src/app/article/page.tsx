@@ -1,38 +1,81 @@
-import { revalidatePath } from "next/cache";
+"use client";
+
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { useArticlesStore } from "../../../utils/article/provider";
+import { init } from "next/dist/compiled/webpack/webpack";
 
-type ArticlesType = {
-  resultCode: string;
-  msg: string;
-  data: {
-    articles: ReadonlyArray<{
-      id: string;
-      subject: string;
-      content: string;
-      createdAt: string;
-      modifiedAt: string;
-    }>;
+type ArticleType = {
+  id: string;
+  subject: string;
+  content: string;
+  createdAt: string;
+  modifiedAt: string;
+};
+
+const page = () => {
+  const { articles, ids, upload } = useArticlesStore((state) => state);
+
+  const getArticles = async () => {
+    const resp = await fetch("http://localhost:8090/api/v1/articles").then(
+      (data) => data.json()
+    );
+
+    return resp.data;
   };
-};
 
-const getArticles = async (): Promise<ArticlesType> => {
-  const list = await fetch("http://localhost:8090/api/v1/articles").then(
-    (data) => data.json()
+  const deleteArticle = async (id) => {
+    const resp = await fetch(`http://localhost:8090/api/v1/articles/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (resp.ok) {
+      const articles = await getArticles();
+      upload(articles);
+    }
+  };
+
+  const initData = async () => {
+    const initArticles = await getArticles(); // articles[], ids[];
+    upload(initArticles);
+  };
+
+  useEffect(() => {
+    initData();
+  }, []);
+
+  useEffect(() => {}, [articles]);
+
+  return (
+    <>
+      <AddForm articles={articles} ids={ids} upload={upload} />
+      <ul>
+        {articles.map((e: ArticleType) => (
+          <li key={`${e.id}_${e.subject}`}>
+            {e.id} / <Link href={`/article/${e.id}`}>{e.subject}</Link> /{" "}
+            {e.createdAt} /{" "}
+            <button
+              type="button"
+              onClick={() => deleteArticle(e.id)}
+              data-id={e.id}
+            >
+              삭제
+            </button>
+          </li>
+        ))}
+      </ul>
+    </>
   );
-
-  return list;
 };
 
-const ArticleForm = () => {
-  const handleSubmit = async (formData: FormData) => {
-    "use server";
+const AddForm = ({ articles, ids, upload }: any) => {
+  const [errMsg, setErrMsg] = useState("");
 
-    const rawData = {
-      subject: formData.get("subject"),
-      content: formData.get("content"),
-    };
-
-    const response = await fetch("http://localhost:8090/api/v1/articles", {
+  const addArticle = async (rawData: { subject: string; content: string }) => {
+    const resp = await fetch("http://localhost:8090/api/v1/articles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,46 +83,45 @@ const ArticleForm = () => {
       body: JSON.stringify(rawData),
     });
 
-    if (!response.ok) {
-      return "처리되지 않았습니다.";
-    }
+    return resp;
+  };
 
-    return "";
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const rawData = {
+      subject: e.target.subject.value,
+      content: e.target.content.value,
+    };
+
+    const resp = await addArticle(rawData);
+
+    if (resp.ok) {
+      const newArticle = await resp.json();
+
+      const newState = {
+        articles: [...articles, newArticle.data.article],
+        ids: [...ids, newArticle.data.article.id],
+      };
+
+      upload(newState);
+
+      // e.target.subject.value = "";
+      // e.target.content.value = "";
+    } else {
+    }
   };
 
   return (
     <>
-      <h3>등록 Form</h3>
-      <form action={handleSubmit}>
-        <input type="text" name="subject" placeholder="제목" />
-        <input type="text" name="content" placeholder="내용" />
+      <form onSubmit={handleSubmit}>
+        <h3>입력 폼</h3>
+        <input type="text" name="subject" />
+        <input type="text" name="content" />
         <button type="submit">등록</button>
-
-        <output />
       </form>
     </>
   );
 };
 
-export default async function Article() {
-  const {
-    resultCode,
-    data: { articles },
-  }: ArticlesType = await getArticles();
-
-  if (resultCode.startsWith("F-")) return <p>오류 발생</p>;
-
-  return (
-    <>
-      <ArticleForm />
-      <ul>
-        {articles.map((e) => (
-          <li key={e.id}>
-            {e.id} / <Link href={`/article/${e.id}`}>{e.subject}</Link>/
-            {e.createdAt}
-          </li>
-        ))}
-      </ul>
-    </>
-  );
-}
+export default page;

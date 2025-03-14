@@ -1,4 +1,4 @@
-package com.hong_mae.nextjs_prj.config;
+package com.hong_mae.nextjs_prj.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

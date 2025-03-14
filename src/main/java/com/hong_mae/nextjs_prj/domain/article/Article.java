@@ -1,4 +1,4 @@
-package com.hong_mae.nextjs_prj.domain;
+package com.hong_mae.nextjs_prj.domain.article;
 
 import com.hong_mae.nextjs_prj.global.BaseEntity.BaseEntity;
 

@@ -1,10 +1,10 @@
-package com.hong_mae.nextjs_prj.dto;
+package com.hong_mae.nextjs_prj.domain.article.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class ArticleWriteRequest {
+public class ArticleModifyRequest {
     @NotBlank
     private String subject;
     @NotBlank

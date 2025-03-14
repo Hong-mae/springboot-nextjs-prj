@@ -1,11 +1,11 @@
-package com.hong_mae.nextjs_prj.service;
+package com.hong_mae.nextjs_prj.domain.article.service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.hong_mae.nextjs_prj.domain.Article;
+import com.hong_mae.nextjs_prj.domain.article.Article;
 import com.hong_mae.nextjs_prj.global.ReturnData.ReturnData;
 import com.hong_mae.nextjs_prj.repository.ArticleRepository;
 

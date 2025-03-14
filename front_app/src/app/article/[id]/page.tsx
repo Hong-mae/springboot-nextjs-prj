@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface Props {
   params: Promise<{ id: number }>;
 }
@@ -38,6 +40,7 @@ export default async function ArticleDetail({ params }: Props) {
       <div>{content}</div>
       <div>{createdAt}</div>
       <div>{modifiedAt}</div>
+      <Link href={`/article/${id}/edit`}>수정하기</Link>
     </>
   );
 }
