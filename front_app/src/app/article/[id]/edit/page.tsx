@@ -53,8 +53,6 @@ const page = () => {
       body: JSON.stringify(article),
     });
 
-    console.log(resp);
-
     if (resp.ok) {
       alert("ok");
     }
